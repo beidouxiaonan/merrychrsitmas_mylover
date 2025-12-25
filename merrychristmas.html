@@ -220,7 +220,16 @@
             setupPostProcessing();
             setupEvents();          
             setupLetterSystem(); 
-            
+            try {
+                const response = await fetch('tree.json');
+                if (response.ok) {
+                    const jsonData = await response.text();
+                    console.log("检测到 tree.json，正在自动还原场景...");
+                    importSceneData(jsonData, true); // 增加一个参数表示是自动加载，避免弹窗
+                }
+            } catch (e) {
+                console.log("未检测到 tree.json 或读取失败，加载默认场景。");
+            }
             switchTheme(0);
 
             initMediaPipe().catch(console.warn);
